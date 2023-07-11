@@ -41,3 +41,14 @@ console.log(
     "isBot"
   )
 ); //should return false.
+
+console.log(
+  truthCheck(
+    [
+      { name: "Quincy", role: "Founder", isBot: true },
+      { name: "Naomi", role: "", isBot: true },
+      { name: "Camperbot", role: "Bot", isBot: true },
+    ],
+    "isNOTBot"
+  )
+); //should return false.
