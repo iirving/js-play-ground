@@ -12,47 +12,52 @@
 // These methods must be the only available means of interacting with the object.
 
 const Person = function (firstAndLast) {
-  (this.fullname = firstAndLast),
-    (this.getFullName = function () {
-      return this.fullname;
-    }),
-    (this.getLastName = function () {
-      let wordArr = this.fullname.split(" ");
-      return wordArr[1];
-    }),
-    (this.getFirstName = function () {
-      let wordArr = this.fullname.split(" ");
-      return wordArr[0];
-    }),
+  let fullname = firstAndLast;
+
+  this.getFullName = function () {
+    return fullname;
+  };
+
+  this.getLastName = function () {
+    let wordArr = fullname.split(" ");
+    return wordArr[1];
+  };
+
+  (this.getFirstName = function () {
+    let wordArr = fullname.split(" ");
+    return wordArr[0];
+  }),
     (this.setFirstName = function (first) {
-      let wordArr = this.fullname.split(" ");
+      let wordArr = fullname.split(" ");
       let newArr = [[first], wordArr[1]];
       console.log("setLastName", newArr.join(" "));
       this.fullname = newArr.join(" ");
     }),
     (this.setLastName = function (last) {
-      let wordArr = this.fullname.split(" ");
+      let wordArr = fullname.split(" ");
       let newArr = [wordArr[0], [last]];
       //console.log("setLastName", newArr.join(" "))
-      this.fullname = newArr.join(" ");
+      fullname = newArr.join(" ");
     }),
-    (this.setFullName = function (fullName) {
-      this.fullname = fullName;
+    (this.setFullName = function (newFullName) {
+      fullname = newFullName;
     });
 };
 
 const bob = new Person("Bob Ross");
 console.log(bob.getFullName());
-//console.log(bob.getLastName());
-//console.log(bob.getFirstName());
+console.log(bob.getLastName());
+console.log(bob.getFirstName());
 console.log(Object.keys(bob).length);
-//bob.setLastName("Curry");
-//console.log(bob.getFullName());
+bob.setLastName("Curry");
+console.log(bob.getFullName());
 
-//bob.setFirstName("Haskell");
-//console.log(bob.getFullName());
+bob.setFirstName("Haskell");
+console.log(bob.getFullName());
 
 bob.setFullName("Haskell Curry");
 console.log(bob.getFullName());
 console.log(bob.getLastName());
 console.log(bob.getFirstName());
+
+console.log("try", bob.fullname);
