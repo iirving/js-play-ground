@@ -21,7 +21,7 @@
 
 // The radius of the earth is 6367.4447 kilometers, and the GM value of earth is 398600.4418 km3s-2.
 
-function calcOrbitalPeriod(avgAlt) {
+function lookupOrbitalPeriod(avgAlt) {
   // massive chet!
   const lookUp = {
     35873.5553: 86400,
@@ -31,28 +31,33 @@ function calcOrbitalPeriod(avgAlt) {
   return lookUp[avgAlt];
 }
 
+function getOrbPeriod(avgAlt) {
+  const GM = 398600.4418;
+  const earthRadius = 6367.4447;
+  const a = 2 * Math.PI;
+
+  const c = Math.pow(earthRadius + avgAlt, 3);
+  const b = Math.sqrt(c / GM);
+  const orbPeriod = Math.round(a * b);
+  return orbPeriod;
+}
+
 function buildOPObj(element) {
   let name = element.name;
   let avgAlt = element.avgAlt;
-  console.log(name, avgAlt, {
-    name: name,
-    orbitalPeriod: calcOrbitalPeriod(avgAlt),
-  });
+
   return {
     name: name,
-    orbitalPeriod: calcOrbitalPeriod(avgAlt),
+    orbitalPeriod: getOrbPeriod(avgAlt),
   };
 }
 
 function orbitalPeriod(arr) {
-  const GM = 398600.4418;
-  const earthRadius = 6367.4447;
-
   let newArr = arr.map((element) => buildOPObj(element));
 
   return newArr;
 }
 
-console.log(orbitalPeriod([{ name: "sputnik", avgAlt: 35873.5553 }]));
+console.table(orbitalPeriod([{ name: "sputnik", avgAlt: 35873.5553 }]));
 
-console.log(orbitalPeriod([{ name: "iss", avgAlt: 413.6 }]));
+console.table(orbitalPeriod([{ name: "iss", avgAlt: 413.6 }]));
