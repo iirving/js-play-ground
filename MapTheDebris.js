@@ -61,3 +61,11 @@ function orbitalPeriod(arr) {
 console.table(orbitalPeriod([{ name: "sputnik", avgAlt: 35873.5553 }]));
 
 console.table(orbitalPeriod([{ name: "iss", avgAlt: 413.6 }]));
+
+console.table(
+  orbitalPeriod([
+    { name: "iss", avgAlt: 413.6 },
+    { name: "hubble", avgAlt: 556.7 },
+    { name: "moon", avgAlt: 378632.553 },
+  ])
+);
