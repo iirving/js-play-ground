@@ -1,5 +1,5 @@
 //import { describe, expect, test } from "@jest/globals";
-const sum = require("./sum.js");
+import sum from "./sum.js";
 
 describe("sum module", () => {
   test("adds 1 + 2 to equal 3", () => {
