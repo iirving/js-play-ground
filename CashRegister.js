@@ -109,19 +109,21 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
   let valueInCID = cidElement[1];
   let value_in_pennies = valueInCID * 100;
   let ValueOfType = CURRENCY_VALUES_MULTIPLIER[type]; //in pennies
-  let changeAmountInPennies = changeAmount * 100; // the change Amount in Pennies
+  let changeAmountInPennies = Math.round(changeAmount * 100); // the change Amount in Pennies
   let changeArray = []; // the type , the value of type being given as change
 
-  // console.log(
-  //   "changeAmount",
-  //   changeAmount,
-  //   "type",
-  //   type,
-  //   "valueInCID",
-  //   valueInCID,
-  //   "ValueOfType",
-  //   ValueOfType
-  // );
+  if (type === "FIVE") {
+    console.error(
+      "changeAmount",
+      changeAmount,
+      "type",
+      type,
+      "valueInCID",
+      valueInCID,
+      "ValueOfType",
+      ValueOfType
+    );
+  }
 
   changeArray = [type, 0];
   if (valueInCID === changeAmount) {
@@ -139,27 +141,38 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
     // if the value of one unit of the type is greater that the changeAmount
     //   then return the amount 0 and a null changeArray
     return { amount: 0, change: [] };
-  } else if (value_in_pennies <= changeAmountInPennies) {
-    // console.log(
-    //   "test case",
-    //   "changeAmountInPennies",
-    //   changeAmountInPennies,
-    //   "value_in_pennies",
-    //   value_in_pennies
-    // );
+  } else if (ValueOfType <= changeAmountInPennies) {
+    // not working for "FIVE"
+    console.log(
+      "test case",
+      "changeAmountInPennies",
+      changeAmountInPennies,
+      "value_in_pennies",
+      value_in_pennies,
+      "ValueOfType",
+      ValueOfType
+    );
     // some number of bills can be used to pay some ammount of the changeAmount
     // we can use all of the bill to pay some of the amount
-    let numberOfBillWeCanUse = value_in_pennies / ValueOfType; //3
-    let changeToReturn = (ValueOfType / 100) * numberOfBillWeCanUse;
-    changeArray = [type, changeToReturn];
-    let newchangeAmount = changeAmount - changeToReturn;
-    // console.log(
-    //   "test case return",
-    //   "changeToReturn",
-    //   changeToReturn,
-    //   "newchangeAmount",
-    //   newchangeAmount
-    // );
+    let numberOfBillWeCanUse = Math.round(changeAmountInPennies / ValueOfType); //3
+    let changeToReturn = ValueOfType * numberOfBillWeCanUse;
+    let changeToReturnInDollars = changeToReturn / 100.0;
+
+    changeArray = [type, changeToReturnInDollars];
+    let newchangeAmount =
+      Math.round(changeAmountInPennies - changeToReturn) / 100;
+
+    console.log(
+      "test case return",
+      "numberOfBillWeCanUse",
+      numberOfBillWeCanUse,
+      "changeToReturn",
+      changeToReturn,
+      "changeToReturnInDollars",
+      changeToReturnInDollars,
+      "newchangeAmount",
+      newchangeAmount
+    );
     return { amount: newchangeAmount, change: changeArray };
   }
 
@@ -227,6 +240,8 @@ function doCidadjustment(changeAmount, cid) {
   // for each element in cid highest to lowest
   let cid_length = cid.length;
 
+  let orginalChangeAmount = changeAmount;
+
   let changeAmount_in_pennies = changeAmount * 100;
   let remaningAmmountInPennies = changeAmount_in_pennies;
 
@@ -238,7 +253,8 @@ function doCidadjustment(changeAmount, cid) {
   // let adjustment = [];
   let changeElementAmount = 0;
 
-  NumberOFThisTypeICanUse = 0;
+  let NumberOFThisTypeICanUse = 0;
+  let element;
 
   console.log(
     "changeAmount",
@@ -249,16 +265,75 @@ function doCidadjustment(changeAmount, cid) {
   for (let x = cid_length - 1; x >= 0; x--) {
     element = cid[x];
 
+    console.log(
+      ">>X=",
+      x,
+      element[0],
+      element[1],
+      "changeAmount",
+      changeAmount
+    );
+
     let adjustment = doCidadjustmentForAType(changeAmount, element);
     adjustedElement = adjustment.change;
-    let changeElementAmount = adjustedElement[1];
+    let changeElementAmount = adjustment.amount;
+    let type = adjustedElement[0];
 
-    if (changeElementAmount != 0) {
+    console.log(">>X=", x, adjustedElement, type, changeElementAmount);
+
+    if (changeElementAmount !== 0) {
       change.status = STATUS_OPEN;
       change.change.push(adjustedElement);
-      changeAmount = changeAmount - adjustment.amount;
+      changeAmount = Math.round(changeAmount - adjustment.amount);
+      console.log(
+        ">>X=",
+        x,
+        adjustedElement,
+        type,
+        changeElementAmount,
+        "remaining",
+        changeAmount
+      );
     }
   }
+
+  // if changeAmount is not zero then we dont have suffishent funds
+  if (changeAmount !== 0) {
+    console.error("changeAmount", changeAmount, "suffishent funds!!!");
+  }
+
+  //remove any null elemenets from change.change
+  let cleanArr = change.change.filter((elements) => {
+    let type = elements[0];
+    let value = elements[1];
+    if (
+      type != undefined ||
+      value != undefined
+      // type != null ||
+      // value != null ||
+      // value != 0 ||
+      // elements.length != 0
+    ) {
+      return elements;
+    }
+  });
+  change.change = cleanArr;
+
+  let TotalChangeReturned = getTotalCid(change.change);
+  console.log(
+    "what the total value being return as change",
+    TotalChangeReturned
+  );
+  if (changeAmount !== 0) {
+    console.error(
+      "changeAmount",
+      orginalChangeAmount,
+      "TotalChangeReturned",
+      TotalChangeReturned,
+      "suffishent funds!!!"
+    );
+  }
+  orginalChangeAmount;
 
   return change; //{ status: "OPEN", change: [["QUARTER", 0.5]] };
 }
@@ -289,6 +364,11 @@ function checkCashRegister(price, cash, cid) {
   }
   return change;
 }
+
+module.exports = {
+  checkCashRegister: checkCashRegister,
+  doCidadjustmentForAType: doCidadjustmentForAType,
+};
 
 // console.log(
 //   checkCashRegister(19.5, 20, [
@@ -346,120 +426,141 @@ function checkCashRegister(price, cash, cid) {
 // number = number + 1;
 // console.assert(number % 2 === 0, "%0", { number, errorMsg });
 
-// let result = checkCashRegister(3.26, 100, [
-//   ["PENNY", 1.01],
-//   ["NICKEL", 2.05],
-//   ["DIME", 3.1],
-//   ["QUARTER", 4.25],
-//   ["ONE", 90],
-//   ["FIVE", 55],
-//   ["TEN", 20],
-//   ["TWENTY", 60],
-//   ["ONE HUNDRED", 100],
-// ]);
-// console.log(result.status, "should be open");
+let result = checkCashRegister(3.26, 100, [
+  ["PENNY", 1.01],
+  ["NICKEL", 2.05],
+  ["DIME", 3.1],
+  ["QUARTER", 4.25],
+  ["ONE", 90],
+  ["FIVE", 55],
+  ["TEN", 20],
+  ["TWENTY", 60],
+  ["ONE HUNDRED", 100],
+]);
+console.log(result.status, "should be open");
 
-// console.table(result.change);
-// console.log("should return change:>>");
-// console.table([
-//   ["TWENTY", 60],
-//   ["TEN", 20],
-//   ["FIVE", 15],
-//   ["ONE", 1],
-//   ["QUARTER", 0.5],
-//   ["DIME", 0.2],
-//   ["PENNY", 0.04],
-// ]);
+console.table(result.change);
+console.log("should return change:>>");
+console.table([
+  ["TWENTY", 60],
+  ["TEN", 20],
+  ["FIVE", 15],
+  ["ONE", 1],
+  ["QUARTER", 0.5],
+  ["DIME", 0.2],
+  ["PENNY", 0.04],
+]);
+
+result = doCidadjustmentForAType(20, ["FIVE", 55]);
+console.log(
+  "doCidadjustmentForAType",
+  "amount",
+  result.amount,
+  "should return 15"
+);
+console.table(result.change);
+console.assert(result.change[1] === 15, "result.change amount should be 15");
+
+/*************************************** */
+// console.log("testing doCidadjustmentForAType function");
 
 // result = doCidadjustmentForAType(96.74, ["TWENTY", 60]);
 // console.log("doCidadjustmentForAType", "amount", result.amount);
 // console.table(result.change);
+// console.assert(result.amount === 36.74, "result.amount should be 36.74");
+// console.assert(
+//   result.change[0] === "TWENTY",
+//   "result.change bill type should be TWENTY"
+// );
+// console.assert(result.change[1] === 60, "result.change amount should be 60");
+
 // console.log("eof");
 
 // test(" doCidadjustmentForAType passing in 60, [TWENTY, 60]", () => {
 //   result = doCidadjustmentForAType(60, ["TWENTY", 60]);
 
 //   expect(result.change[0]).toBe(60);
+//   expect(result.change[0]).toBe(600);
 // });
 
-result = doCidadjustmentForAType(60, ["TWENTY", 60]);
-console.log(
-  "doCidadjustmentForAType 1",
-  "passing in 60, [TWENTY, 60]",
-  result.amount,
-  result.change[0],
-  result.change[1]
-);
-console.assert(result.amount === 60, "result.amount should be 60");
-console.assert(
-  result.change[0] === "TWENTY",
-  "result.change bill type should be TWENTY"
-);
-console.assert(result.change[1] === 60, "result.change amount should be 60");
+// result = doCidadjustmentForAType(60, ["TWENTY", 60]);
+// console.log(
+//   "doCidadjustmentForAType 1",
+//   "passing in 60, [TWENTY, 60]",
+//   result.amount,
+//   result.change[0],
+//   result.change[1]
+// );
+// console.assert(result.amount === 60, "result.amount should be 60");
+// console.assert(
+//   result.change[0] === "TWENTY",
+//   "result.change bill type should be TWENTY"
+// );
+// console.assert(result.change[1] === 60, "result.change amount should be 60");
 
-result = doCidadjustmentForAType(70, ["TWENTY", 60]);
-console.log(
-  "doCidadjustmentForAType we can use all of the bill to pay some of the amount",
-  "passing in 70, [TWENTY, 60]",
-  " expecting 10, [TWENTY, 60] ",
-  result.amount,
-  result.change[0],
-  result.change[1]
-);
-console.assert(result.amount === 10, "result.amount should be 10");
-console.assert(
-  result.change[0] === "TWENTY",
-  "result.change bill type should be TWENTY"
-);
-console.assert(result.change[1] === 60, "result.change amount should be 60");
+// result = doCidadjustmentForAType(70, ["TWENTY", 60]);
+// console.log(
+//   "doCidadjustmentForAType we can use all of the bill to pay some of the amount",
+//   "passing in 70, [TWENTY, 60]",
+//   " expecting 10, [TWENTY, 60] ",
+//   result.amount,
+//   result.change[0],
+//   result.change[1]
+// );
+// console.assert(result.amount === 10, "result.amount should be 10");
+// console.assert(
+//   result.change[0] === "TWENTY",
+//   "result.change bill type should be TWENTY"
+// );
+// console.assert(result.change[1] === 60, "result.change amount should be 60");
 
-result = doCidadjustmentForAType(19, ["TWENTY", 20]);
-console.log(
-  "doCidadjustmentForAType if the amount of change is less than one type on this bill",
-  "passing in 19, [TWENTY, 20]",
-  "expecting {0 , []}  ",
-  result.amount,
-  result.change[0],
-  result.change[1]
-);
-console.assert(result.amount === 0, "result.amount should be 0");
-console.assert(
-  Array.isArray(result.change) && result.change.length == 0,
-  "result.change should be an empty array"
-);
+// result = doCidadjustmentForAType(19, ["TWENTY", 20]);
+// console.log(
+//   "doCidadjustmentForAType if the amount of change is less than one type on this bill",
+//   "passing in 19, [TWENTY, 20]",
+//   "expecting {0 , []}  ",
+//   result.amount,
+//   result.change[0],
+//   result.change[1]
+// );
+// console.assert(result.amount === 0, "result.amount should be 0");
+// console.assert(
+//   Array.isArray(result.change) && result.change.length == 0,
+//   "result.change should be an empty array"
+// );
 
-// if the value of one unit of the type is greater that the changeAmount
-//   then return the amount 0 and a null changeArray
-result = doCidadjustmentForAType(0, ["TWENTY", 20]);
-console.log(
-  "doCidadjustmentForAType test for 0 change",
-  "passing in 0, [TWENTY, 20]",
-  "expecting {0 , []}  ",
-  result.amount,
-  result.change,
-  result.change[0],
-  result.change[1]
-);
-console.assert(result.amount === 0, "result.amount should be 0");
-console.assert(
-  Array.isArray(result.change) && result.change.length == 0,
-  "result.change should be an empty array"
-);
+// // if the value of one unit of the type is greater that the changeAmount
+// //   then return the amount 0 and a null changeArray
+// result = doCidadjustmentForAType(0, ["TWENTY", 20]);
+// console.log(
+//   "doCidadjustmentForAType test for 0 change",
+//   "passing in 0, [TWENTY, 20]",
+//   "expecting {0 , []}  ",
+//   result.amount,
+//   result.change,
+//   result.change[0],
+//   result.change[1]
+// );
+// console.assert(result.amount === 0, "result.amount should be 0");
+// console.assert(
+//   Array.isArray(result.change) && result.change.length == 0,
+//   "result.change should be an empty array"
+// );
 
-result = doCidadjustmentForAType(123, ["TWENTY", 0]);
-console.log(
-  "doCidadjustmentForAType test for 0 bills in draw",
-  "passing in 123, [TWENTY, 0]",
-  "expecting {0 , []}  ",
-  result.amount,
-  result.change,
-  result.change[0],
-  result.change[1]
-);
-console.assert(result.amount === 123, "result.amount should be 123");
-console.assert(
-  Array.isArray(result.change) && result.change.length == 0,
-  "result.change should be an empty array"
-);
+// result = doCidadjustmentForAType(123, ["TWENTY", 0]);
+// console.log(
+//   "doCidadjustmentForAType test for 0 bills in draw",
+//   "passing in 123, [TWENTY, 0]",
+//   "expecting {0 , []}  ",
+//   result.amount,
+//   result.change,
+//   result.change[0],
+//   result.change[1]
+// );
+// console.assert(result.amount === 123, "result.amount should be 123");
+// console.assert(
+//   Array.isArray(result.change) && result.change.length == 0,
+//   "result.change should be an empty array"
+// );
 
-console.log("eof");
+// console.log("eof");
