@@ -35,13 +35,11 @@ describe("Arguments Optional function tests", () => {
     expect(result).toBe(12);
   });
 
-  console.log(addTogether(2)([3]), "8 should return undefined.");
   test("addTogether(2)([3] should return undefined", () => {
     result = addTogether(2)([3]);
     expect(result).toBe(undefined);
   });
 
-  console.log(addTogether(2, "3"), "9 should return undefined.");
   test("addTogether(2,'3') should return undefined", () => {
     result = addTogether(2, "3");
     expect(result).toBe(undefined);
