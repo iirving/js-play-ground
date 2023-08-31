@@ -77,9 +77,7 @@ function getTotalCid(cid) {
   // note I'm converting to pennies and converting back to dollars to avoid pression issues
   let total_pennies = 0;
   for (const element of cid) {
-    // console.log(element[1]);
     total_pennies = total_pennies + element[1] * 100;
-    //    console.log();
   }
 
   return total_pennies / 100;
@@ -218,7 +216,7 @@ function doCidadjustment(changeAmount, cid) {
   changeAmount = Number.parseFloat(changeAmount);
   // if changeAmount is not zero then we dont have suffishent funds
   if (changeAmount !== 0) {
-    console.log("changeAmount", changeAmount, "INsuffishent funds!!!");
+    //    console.log("changeAmount", changeAmount, "INsuffishent funds!!!");
     change = {
       status: STATUS_INSUFFICIENT,
       change: [],

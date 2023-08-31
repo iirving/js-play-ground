@@ -28,20 +28,3 @@ function addTogether() {
 module.exports = {
   addTogether,
 };
-
-// console.log(34, isNumber(34)) //return true
-// console.log("string 34", isNumber("34")) //return false
-// console.log("array", isNumber([34, 2])) //return false
-
-console.log(addTogether(2, 3), "1 should return 5");
-console.log(addTogether(23, 30), "2 should return 53.");
-console.log(addTogether("2", 3), "3 should return undefined.");
-console.log(addTogether(5, undefined), "4 should return undefined.");
-console.log(
-  addTogether("https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
-  "5 should return undefined."
-);
-console.log(addTogether(5), "6 should return a function.");
-console.log(addTogether(5)(7), "7 should return 12.");
-console.log(addTogether(2)([3]), "8 should return undefined.");
-console.log(addTogether(2, "3"), "9 should return undefined.");
