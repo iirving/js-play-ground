@@ -1,10 +1,15 @@
 // import checkCashRegister from "./CashRegister.js";
 // import { doCidadjustmentForAType } from "./CashRegister.js";
 
-const {
+// const {
+//   checkCashRegister,
+//   doCidadjustmentForAType,
+// } = require("./CashRegister.js");
+import {
   checkCashRegister,
   doCidadjustmentForAType,
-} = require("./CashRegister.js");
+  getTotalCid,
+} from "./CashRegister.js";
 
 describe("test highlevel checkCashRegister function ", () => {
   test("basic test", () => {
@@ -30,22 +35,35 @@ describe("test highlevel checkCashRegister function ", () => {
   });
 });
 
-describe("testing sun function doCidadjustmentForAType", () => {
-  test(" doCidadjustmentForAType passing in 60, [TWENTY, 60]", () => {
-    result = doCidadjustmentForAType(60, ["TWENTY", 60]);
+describe("testing sub function doCidadjustmentForAType", () => {
+  test.only(" doCidadjustmentForAType passing in 60, [TWENTY, 60]", () => {
+    result = doCidadjustmentForAType(20, ["FIVE", 55]);
+    // let result = (60, ["TWENTY", 60]);
 
-    console.table("result", result);
-    expect(result).toBe("OPEN");
-  }),
-    test(" doCidadjustmentForAType 20 five 55", () => {
-      result = doCidadjustmentForAType(20, ["FIVE", 55]);
-      console.log(
-        "doCidadjustmentForAType",
-        "amount",
-        result.amount,
-        "should return 15"
-      );
-      console.table(result.change);
-      expect(result.change[1]).toBe(15);
-    });
+    //console.dir(result);
+    //console.table(result);
+
+    let amount = result.change; // === 15;
+
+    expect(amount[1]).toBe(15);
+
+    //    console.table("result", result);
+    // expect(result).toBe("OPEN");
+  });
+
+  test(" for   [TWENTY, 60], > 3 $20 bill", () => {
+    result = doCidadjustmentForAType(20, ["FIVE", 55]);
+  });
+
+  test(" doCidadjustmentForAType another 20 five 55", () => {
+    result = doCidadjustmentForAType(20, ["FIVE", 55]);
+    console.log(
+      "doCidadjustmentForAType",
+      "amount",
+      result.amount,
+      "should return 15"
+    );
+    console.table(result.change);
+    expect(result.change[1]).toBe(15);
+  });
 });

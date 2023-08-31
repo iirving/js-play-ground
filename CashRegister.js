@@ -109,7 +109,7 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
   let valueInCID = cidElement[1];
   let value_in_pennies = valueInCID * 100;
   let ValueOfType = CURRENCY_VALUES_MULTIPLIER[type]; //in pennies
-  let changeAmountInPennies = Math.round(changeAmount * 100); // the change Amount in Pennies
+  let changeAmountInPennies = parseInt(Math.round(changeAmount * 100)); // the change Amount in Pennies
   let changeArray = []; // the type , the value of type being given as change
 
   if (type === "FIVE") {
@@ -365,10 +365,11 @@ function checkCashRegister(price, cash, cid) {
   return change;
 }
 
-module.exports = {
-  checkCashRegister: checkCashRegister,
-  doCidadjustmentForAType: doCidadjustmentForAType,
-};
+// module.exports = {
+//   checkCashRegister: checkCashRegister,
+//   doCidadjustmentForAType: doCidadjustmentForAType,
+// };
+export { checkCashRegister, doCidadjustmentForAType, getTotalCid };
 
 // console.log(
 //   checkCashRegister(19.5, 20, [
