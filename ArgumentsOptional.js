@@ -25,6 +25,10 @@ function addTogether() {
   }
 }
 
+module.exports = {
+  addTogether,
+};
+
 // console.log(34, isNumber(34)) //return true
 // console.log("string 34", isNumber("34")) //return false
 // console.log("array", isNumber([34, 2])) //return false
