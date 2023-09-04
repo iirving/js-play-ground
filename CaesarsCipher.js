@@ -15,12 +15,9 @@ function rot13(str) {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const MAX_ALPHA = alphabet.length;
 
-  //str to array
-  //for each element
   let NewArr = str.split("").map((element, x) => {
     //    find alpha value
     let loc = alphabet.indexOf(element);
-    // console.log(element, x, loc, MAX_ALPHA);
     //  if alphabetic
     if (loc >= 0) {
       //    increment by ROT_VALUE
@@ -30,27 +27,10 @@ function rot13(str) {
       } else {
         loc = loc + ROT_VALUE;
       }
-      // console.log("new loc", loc, alphabet[loc]);
     }
     return loc >= 0 ? alphabet[loc] : element;
   });
-  // jion new array into str
   return NewArr.join("");
-
-  return str;
 }
 
-// console.log(rot13("A"));
-
-console.log(
-  rot13("SERR PBQR PNZC"),
-  "should decode to the string FREE CODE CAMP"
-);
-
-console.log(rot13("SERR CVMMN!"), "should decode to the string FREE PIZZA!");
-console.log(rot13("SERR YBIR?"), "should decode to the string FREE LOVE?");
-
-console.log(
-  rot13("GUR DHVPX OEBJA SBK WHZCF BIRE GUR YNML QBT."),
-  " should decode to the string THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
-);
+module.exports = { rot13 };
