@@ -31,14 +31,12 @@ export const Person = function (firstAndLast) {
   this.setFirstName = function (first) {
     let wordArr = fullname.split(" ");
     let newArr = [[first], wordArr[1]];
-    console.log("setLastName", newArr.join(" "));
     this.fullname = newArr.join(" ");
   };
 
   this.setLastName = function (last) {
     let wordArr = fullname.split(" ");
     let newArr = [wordArr[0], [last]];
-    //console.log("setLastName", newArr.join(" "))
     fullname = newArr.join(" ");
   };
 
@@ -46,21 +44,3 @@ export const Person = function (firstAndLast) {
     fullname = newFullName;
   };
 };
-
-const bob = new Person("Bob Ross");
-console.log(bob.getFullName());
-console.log(bob.getLastName());
-console.log(bob.getFirstName());
-console.log(Object.keys(bob).length);
-bob.setLastName("Curry");
-console.log(bob.getFullName());
-
-bob.setFirstName("Haskell");
-console.log(bob.getFullName());
-
-bob.setFullName("Haskell Curry");
-console.log(bob.getFullName());
-console.log(bob.getLastName());
-console.log(bob.getFirstName());
-
-console.log("try", bob.fullname);

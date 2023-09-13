@@ -216,7 +216,6 @@ function doCidadjustment(changeAmount, cid) {
   changeAmount = Number.parseFloat(changeAmount);
   // if changeAmount is not zero then we dont have suffishent funds
   if (changeAmount !== 0) {
-    //    console.log("changeAmount", changeAmount, "INsuffishent funds!!!");
     change = {
       status: STATUS_INSUFFICIENT,
       change: [],
@@ -235,8 +234,6 @@ function doCidadjustment(changeAmount, cid) {
   change.change = cleanArr;
 
   let TotalChangeReturned = getTotalCid(change.change);
-
-  // orginalChangeAmount;
 
   return change;
 }
@@ -263,7 +260,5 @@ function checkCashRegister(price, cash, cid) {
   }
   return change;
 }
-
-//export { checkCashRegister, doCidadjustmentForAType, getTotalCid };
 
 export { checkCashRegister, doCidadjustmentForAType, getTotalCid };
