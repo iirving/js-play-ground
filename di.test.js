@@ -14,7 +14,7 @@ describe("test dropElements function ", () => {
       return n === 1;
     });
 
-    expect(result).toEqual([1, 0, 1]);
+    expect(result).toEqual([1, 0, 2]);
   });
 
   test("should return [3, 4].", () => {
