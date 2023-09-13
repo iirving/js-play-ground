@@ -1,13 +1,8 @@
-// import {
-//   checkCashRegister,
-//   doCidadjustmentForAType,
-//   getTotalCid,
-// } from "./CashRegister.js";
-const {
+import {
   checkCashRegister,
   doCidadjustmentForAType,
   getTotalCid,
-} = require("./CashRegister.js");
+} from "./CashRegister";
 
 describe("test highlevel checkCashRegister function ", () => {
   test(" returns an object", () => {
@@ -23,7 +18,7 @@ describe("test highlevel checkCashRegister function ", () => {
       ["ONE HUNDRED", 100],
     ]);
 
-    type = typeof result;
+    let type = typeof result;
     expect(type).toEqual("object");
   });
 
@@ -92,7 +87,7 @@ describe("test highlevel checkCashRegister function ", () => {
   });
 
   test("another INSUFFICIENT_FUNDS test", () => {
-    result = checkCashRegister(19.5, 20, [
+    let result = checkCashRegister(19.5, 20, [
       ["PENNY", 0.01],
       ["NICKEL", 0],
       ["DIME", 0],
@@ -109,7 +104,7 @@ describe("test highlevel checkCashRegister function ", () => {
   });
 
   test("basic test", () => {
-    cid = [
+    let cid = [
       ["PENNY", 1.01],
       ["NICKEL", 2.05],
       ["DIME", 3.1],
@@ -143,14 +138,14 @@ describe("testing sub function doCidadjustmentForAType", () => {
   });
 
   test(" doCidadjustmentForAType another 20 five 55", () => {
-    result = doCidadjustmentForAType(20, ["FIVE", 55]);
+    let result = doCidadjustmentForAType(20, ["FIVE", 55]);
 
     expect(result.amount).toBe("20.00");
     expect(result.change[1]).toBe("20.00");
   });
 
   test(" doCidadjustmentForAType another 20 five 55", () => {
-    result = doCidadjustmentForAType(16 + 0.5 + 0.2 + 0.04, ["FIVE", 55]);
+    let result = doCidadjustmentForAType(16 + 0.5 + 0.2 + 0.04, ["FIVE", 55]);
 
     let amount = result.amount;
     let change = result.change;
@@ -161,7 +156,7 @@ describe("testing sub function doCidadjustmentForAType", () => {
   });
 
   test(" doCidadjustmentForAType for a penny", () => {
-    result = doCidadjustmentForAType(0.5, ["PENNY", 0.01]);
+    let result = doCidadjustmentForAType(0.5, ["PENNY", 0.01]);
 
     let amount = result.amount;
     let change = result.change;
@@ -173,7 +168,7 @@ describe("testing sub function doCidadjustmentForAType", () => {
 
   //  ["ONE", 1],
   test(" doCidadjustmentForAType for a signle ONE and can ntot make change", () => {
-    result = doCidadjustmentForAType(0.5, ["ONE", 1]);
+    let result = doCidadjustmentForAType(0.5, ["ONE", 1]);
 
     let amount = result.amount;
     let change = result.change;

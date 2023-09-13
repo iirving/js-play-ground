@@ -1,4 +1,4 @@
-const { addTogether } = require("./ArgumentsOptional");
+import { addTogether } from "./ArgumentsOptional";
 
 describe("Arguments Optional function tests", () => {
   test("2 and 3 should return 5", () => {
@@ -10,23 +10,23 @@ describe("Arguments Optional function tests", () => {
   });
 
   test("string 3 and 3 should return undefined", () => {
-    result = addTogether("2", 3);
+    let result = addTogether("2", 3);
     expect(result).toBe(undefined);
   });
 
   test("5 and undefined should return undefined", () => {
-    result = addTogether(5, undefined);
+    let result = addTogether(5, undefined);
     expect(result).toBe(undefined);
   });
 
   test("a string should return undefined", () => {
-    result = addTogether("ianirving is great");
+    let result = addTogether("ianirving is great");
     expect(result).toBe(undefined);
   });
 
   test("passing in a signle number should resturn a function", () => {
     result = addTogether(6);
-    type = typeof result;
+    let type = typeof result;
     expect(type).toBe("function");
   });
 

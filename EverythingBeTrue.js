@@ -18,6 +18,4 @@ function truthCheck(collection, pre) {
   return truthCheck;
 }
 
-module.exports = {
-  truthCheck,
-};
+export { truthCheck };

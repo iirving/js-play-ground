@@ -1,4 +1,4 @@
-const { truthCheck } = require("./EverythingBeTrue");
+import { truthCheck } from "./EverythingBeTrue";
 
 describe("test truthCheck function ", () => {
   test("for some isBot false in collection should return false.", () => {

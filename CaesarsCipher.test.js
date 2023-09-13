@@ -1,4 +1,4 @@
-const { rot13 } = require("./CaesarsCipher");
+import { rot13 } from "./CaesarsCipher";
 
 describe("Caesars Cipher rot13 tests", () => {
   test("should return the string 'FREE CODE CAMP'", () => {
