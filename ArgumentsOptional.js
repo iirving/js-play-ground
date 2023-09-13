@@ -25,6 +25,4 @@ function addTogether() {
   }
 }
 
-module.exports = {
-  addTogether,
-};
+export { addTogether, isNumber };

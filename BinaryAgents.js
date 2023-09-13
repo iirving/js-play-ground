@@ -53,7 +53,4 @@ function binaryAgent(str) {
   return newArr.join("");
 }
 
-module.exports = {
-  binaryAgent,
-  binaryLookup,
-};
+export { binaryAgent, binaryLookup };

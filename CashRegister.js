@@ -266,8 +266,4 @@ function checkCashRegister(price, cash, cid) {
 
 //export { checkCashRegister, doCidadjustmentForAType, getTotalCid };
 
-module.exports = {
-  checkCashRegister: checkCashRegister,
-  doCidadjustmentForAType: doCidadjustmentForAType,
-  getTotalCid,
-};
+export { checkCashRegister, doCidadjustmentForAType, getTotalCid };

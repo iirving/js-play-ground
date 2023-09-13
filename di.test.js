@@ -1,4 +1,4 @@
-const { dropElements } = require("./di");
+import { dropElements } from "./di";
 
 describe("test dropElements function ", () => {
   test("should return [7, 4].", () => {

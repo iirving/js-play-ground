@@ -33,4 +33,4 @@ function rot13(str) {
   return NewArr.join("");
 }
 
-module.exports = { rot13 };
+export { rot13 };

@@ -23,6 +23,4 @@ function dropElements(arr, func) {
   return satisfied ? arr.slice(pos) : [];
 }
 
-module.exports = {
-  dropElements,
-};
+export { dropElements };

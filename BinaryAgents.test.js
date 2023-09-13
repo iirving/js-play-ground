@@ -1,5 +1,5 @@
 // Binary Agents
-const { binaryAgent } = require("./BinaryAgents");
+import { binaryAgent } from "./BinaryAgents";
 
 describe("binaryAgent tests", () => {
   test("should return the string 'Aren't bonfires fun!?'", () => {
