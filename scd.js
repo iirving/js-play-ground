@@ -15,11 +15,11 @@ function range(start, end) {
   return ans;
 }
 
-function evenlyDivisible(operand1, operand2) {
+export function evenlyDivisible(operand1, operand2) {
   return operand1 % operand2 == 0;
 }
 
-function smallestCommons(arr) {
+export default function smallestCommons(arr) {
   let start = arr[0];
   let end = arr[1];
   [start, end] = arr.sort((a, b) => a - b);
@@ -61,15 +61,3 @@ function smallestCommons(arr) {
 
   return result;
 }
-
-//console.log(evenlyDivisible(60, 4))
-//console.log(smallestCommons([5,1]));
-
-//console.log(smallestCommons([1, 13]) )
-
-//console.log(evenlyDivisible(60, 4))
-// console.log(smallestCommons([1, 5])); //60
-//console.log(smallestCommons([5, 1])); //60
-//console.log(smallestCommons([2, 10])); // should return 2520.//
-//console.log(smallestCommons([1, 13])); // should return 360360.
-console.log(smallestCommons([23, 18])); // should return 6056820.
