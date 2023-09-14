@@ -11,7 +11,7 @@
 
 // We'll also pass strings with special symbols, such as 2A3*3a2, 2A3 3a2, and 2_A3*3#A2.
 
-function palindrome(str) {
+export default function palindrome(str) {
   // turn everything into the lower case
   str = str.toLowerCase();
   // remove all non-alphanumeric characters (punctuation, spaces and symbols)
@@ -22,21 +22,3 @@ function palindrome(str) {
   // check and return
   return newstring == reverseStr;
 }
-
-console.log(palindrome("eye"), "should return a boolean");
-// palindrome("eye") should return true.
-console.log(palindrome("_eye"), " should return true.");
-console.log(palindrome("race car"), "should return true.");
-
-console.log(palindrome("not a palindrome"), "should return false.");
-console.log(
-  palindrome("A man, a plan, a canal. Panama"),
-  "should return true."
-);
-console.log(palindrome("never odd or even"), "should return true.");
-console.log(palindrome("nope"), "should return false.");
-console.log(palindrome("almostomla"), "should return false.");
-console.log(palindrome("My age is 0, 0 si ega ym."), " should return true.");
-console.log(palindrome("1 eye for of 1 eye."), "should return false.");
-console.log(palindrome("0_0 (: /- :) 0-0"), "should return true.");
-console.log(palindrome("five|_/|four"), "should return false.");
