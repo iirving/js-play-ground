@@ -22,10 +22,14 @@ describe("test Smallest Common Multiple module ", () => {
     });
 
     // skipping this test because it takes a long time aka > 100 seconds
-    it.skip("[23, 10] should return 6056820", () => {
-      let result = smallestCommons([23, 10]);
-      expect(result).toBe(5354228880);
-    });
+    it(
+      "[23, 10] should return 6056820",
+      () => {
+        let result = smallestCommons([23, 10]);
+        expect(result).toBe(5354228880);
+      },
+      120 * 1000
+    );
   });
 
   describe("test evenlyDivisible function ", () => {
