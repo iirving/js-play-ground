@@ -17,7 +17,13 @@ function rot13(str) {
   let NewArr = str.split("").map((element, x) => _rotateCharacter(element));
   return NewArr.join("");
 }
-
+/**
+ * if the character is in the alphabetic list
+ * then roated its location
+ * else pass the character though
+ * @param {String} character
+ * @returns {String} the new character
+ */
 function _rotateCharacter(character) {
   let location = _locationInAlphabet(character);
   if (_isInAlphabet(character)) {
@@ -25,6 +31,14 @@ function _rotateCharacter(character) {
     return ALPHABET[location];
   }
   return character;
+}
+
+function alt_rotateCharacter(character) {
+  //  let location = _locationInAlphabet(character);
+
+  return _isInAlphabet(character)
+    ? ALPHABET[_newRotaedLocation(_locationInAlphabet(character))]
+    : character;
 }
 /**
  * where from A to Z is the character located with A being 0 and Z begining 25 (25-1)
