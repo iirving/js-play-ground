@@ -14,30 +14,25 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ROT_VALUE = 13;
 
 function rot13(str) {
-  let NewArr = str.split("").map((element, x) => _rotateCharacter(element));
-  return NewArr.join("");
-}
-/**
- * if the character is in the alphabetic list
- * then roated its location
- * else pass the character though
- * @param {String} character
- * @returns {String} the new character
- */
-function _rotateCharacter(character) {
-  let location = _locationInAlphabet(character);
-  if (_isInAlphabet(character)) {
-    location = _newRotaedLocation(location);
-    return ALPHABET[location];
-  }
-  return character;
+  return str
+    .split("")
+    .map((element, x) => {
+      return _isInAlphabet(element) ? _rotateElement(element) : element;
+    })
+    .join("");
 }
 
-function alt_rotateCharacter(character) {
-  return _isInAlphabet(character)
-    ? ALPHABET[_newRotaedLocation(_locationInAlphabet(character))]
-    : character;
+/**
+ * get the location of the element in the alphabetic list
+ * and use that to calucation the rotated location,
+ * and then return the new alphabetic element based on the rotated location
+ * @param {String} element to rotate
+ * @returns {String} new reotoated element
+ */
+function _rotateElement(element) {
+  return ALPHABET[_newRotaedLocation(_locationInAlphabet(element))];
 }
+
 /**
  * where from A to Z is the character located with A being 0 and Z begining 25 (25-1)
  * @param {String} character  - a single uppercase character
