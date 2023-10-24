@@ -1,4 +1,4 @@
-import { rot13 } from "./CaesarsCipher";
+import { rot13, _locationInAlphabet, _isInAlphabet } from "./CaesarsCipher";
 
 describe("Caesars Cipher rot13 tests", () => {
   test("should return the string 'FREE CODE CAMP'", () => {
@@ -24,5 +24,45 @@ describe("Caesars Cipher rot13 tests", () => {
     const code = "GUR DHVPX OEBJA SBK WHZCF BIRE GUR YNML QBT.";
     let result = rot13(code);
     expect(result).toBe(strResult);
+  });
+});
+
+describe("test isInAlphabet", () => {
+  test("A should first location in alphabet and return 0", () => {
+    let result = _isInAlphabet("A");
+    expect(result).toBe(true);
+  });
+
+  test("Z should last location in Alphbet and return 25", () => {
+    let result = _isInAlphabet("Z");
+    expect(result).toBe(true);
+  });
+  test("1 should not be in any location in Alphbet and return -1", () => {
+    let result = _isInAlphabet("1");
+    expect(result).toBe(false);
+  });
+  test("a symbol should not be in any location in Alphbet and return -1", () => {
+    let result = _isInAlphabet("!");
+    expect(result).toBe(false);
+  });
+});
+
+describe("test locationInAlphabet", () => {
+  test("A should first location in alphabet and return 0", () => {
+    let result = _locationInAlphabet("A");
+    expect(result).toBe(0);
+  });
+
+  test("Z should last location in Alphbet and return 25", () => {
+    let result = _locationInAlphabet("Z");
+    expect(result).toBe(25);
+  });
+  test("1 should not be in any location in Alphbet and return -1", () => {
+    let result = _locationInAlphabet("1");
+    expect(result).toBe(-1);
+  });
+  test("a symbol should not be in any location in Alphbet and return -1", () => {
+    let result = _locationInAlphabet("!");
+    expect(result).toBe(-1);
   });
 });
