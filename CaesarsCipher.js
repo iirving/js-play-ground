@@ -34,8 +34,6 @@ function _rotateCharacter(character) {
 }
 
 function alt_rotateCharacter(character) {
-  //  let location = _locationInAlphabet(character);
-
   return _isInAlphabet(character)
     ? ALPHABET[_newRotaedLocation(_locationInAlphabet(character))]
     : character;
