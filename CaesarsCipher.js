@@ -49,6 +49,7 @@ function _rotateElement(element) {
 function _locationInAlphabet(character) {
   return ALPHABET.indexOf(character);
 }
+
 /**
  * is the character in the Alphabet
  * @param {String} character  - a single uppercase character
