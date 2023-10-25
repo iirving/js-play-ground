@@ -27,42 +27,42 @@ describe("Caesars Cipher rot13 tests", () => {
 });
 
 import { _locationInAlphabet, _isInAlphabet } from "./CaesarsCipher";
-describe("test isInAlphabet", () => {
-  test("A should first location in alphabet and return 0", () => {
-    let result = _isInAlphabet("A");
-    expect(result).toBe(true);
+describe("test private methods", () => {
+  describe("test _isInAlphabet", () => {
+    test("A should first location in alphabet and return 0", () => {
+      let result = _isInAlphabet("A");
+      expect(result).toBe(true);
+    });
+    test("Z should last location in Alphbet and return 25", () => {
+      let result = _isInAlphabet("Z");
+      expect(result).toBe(true);
+    });
+    test("1 should not be in any location in Alphbet and return -1", () => {
+      let result = _isInAlphabet("1");
+      expect(result).toBe(false);
+    });
+    test("a symbol should not be in any location in Alphbet and return -1", () => {
+      let result = _isInAlphabet("!");
+      expect(result).toBe(false);
+    });
   });
 
-  test("Z should last location in Alphbet and return 25", () => {
-    let result = _isInAlphabet("Z");
-    expect(result).toBe(true);
-  });
-  test("1 should not be in any location in Alphbet and return -1", () => {
-    let result = _isInAlphabet("1");
-    expect(result).toBe(false);
-  });
-  test("a symbol should not be in any location in Alphbet and return -1", () => {
-    let result = _isInAlphabet("!");
-    expect(result).toBe(false);
-  });
-});
-
-describe("test locationInAlphabet", () => {
-  test("A should first location in alphabet and return 0", () => {
-    let result = _locationInAlphabet("A");
-    expect(result).toBe(0);
-  });
-
-  test("Z should last location in Alphbet and return 25", () => {
-    let result = _locationInAlphabet("Z");
-    expect(result).toBe(25);
-  });
-  test("1 should not be in any location in Alphbet and return -1", () => {
-    let result = _locationInAlphabet("1");
-    expect(result).toBe(-1);
-  });
-  test("a symbol should not be in any location in Alphbet and return -1", () => {
-    let result = _locationInAlphabet("!");
-    expect(result).toBe(-1);
+  describe("test _locationInAlphabet", () => {
+    test("A should first location in alphabet and return 0", () => {
+      let result = _locationInAlphabet("A");
+      expect(result).toBe(0);
+    });
+    test("Z should last location in Alphbet and return 25", () => {
+      let result = _locationInAlphabet("Z");
+      expect(result).toBe(25);
+    });
+    test("1 should not be in any location in Alphbet and return -1", () => {
+      let result = _locationInAlphabet("1");
+      expect(result).toBe(-1);
+    });
+    test("a symbol should not be in any location in Alphbet and return -1", () => {
+      let result = _locationInAlphabet("!");
+      expect(result).toBe(-1);
+    });
   });
 });
