@@ -11,7 +11,6 @@
 // but do pass them on.
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-// const ROT_VALUE = 13;
 const ROTATE_VALUE = 13;
 
 export default function rot13(str) {
