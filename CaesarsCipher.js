@@ -13,7 +13,7 @@
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ROT_VALUE = 13;
 
-function rot13(str) {
+export default function rot13(str) {
   return str
     .split("")
     .map((element, x) => {
@@ -67,4 +67,4 @@ function _newRotaedLocation(location) {
   return location;
 }
 
-export { rot13, _locationInAlphabet, _isInAlphabet };
+export { _locationInAlphabet, _isInAlphabet };

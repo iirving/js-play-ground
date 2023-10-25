@@ -1,5 +1,4 @@
-import { rot13, _locationInAlphabet, _isInAlphabet } from "./CaesarsCipher";
-
+import rot13 from "./CaesarsCipher";
 describe("Caesars Cipher rot13 tests", () => {
   test("should return the string 'FREE CODE CAMP'", () => {
     const strResult = `FREE CODE CAMP`;
@@ -27,6 +26,7 @@ describe("Caesars Cipher rot13 tests", () => {
   });
 });
 
+import { _locationInAlphabet, _isInAlphabet } from "./CaesarsCipher";
 describe("test isInAlphabet", () => {
   test("A should first location in alphabet and return 0", () => {
     let result = _isInAlphabet("A");
