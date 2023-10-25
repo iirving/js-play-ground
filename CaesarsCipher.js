@@ -11,7 +11,8 @@
 // but do pass them on.
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const ROT_VALUE = 13;
+// const ROT_VALUE = 13;
+const ROTATE_VALUE = 13;
 
 export default function rot13(str) {
   return str
@@ -30,7 +31,9 @@ export default function rot13(str) {
  * @returns {String} new reotoated element
  */
 function _rotateElement(element) {
-  return ALPHABET[_newRotaedLocation(_locationInAlphabet(element))];
+  let location = _locationInAlphabet(element);
+  let newLocation = _newRotaedLocation(location);
+  return ALPHABET[newLocation];
 }
 
 /**
@@ -51,20 +54,20 @@ function _isInAlphabet(character) {
 }
 
 /**
- *  increment by ROT_VALUE
- *  if Rotoation would bring it past the end of the Alphabet (MAX_ALPHA)
- *  then start at the beging of the Alphabet
+ * if Rotoation would bring it past the end of the Alphabet
+ * then start at the beging of the Alphabet
+ * otherwise shift the location by ROTATE_VALUE
  * @param {Number} location
- * @returns {Number} a new single cahracter value location
+ * @returns {Number} a new single character value location
  */
 function _newRotaedLocation(location) {
-  const MAX_ALPHA = ALPHABET.length;
-  if (location + ROT_VALUE >= MAX_ALPHA) {
-    location = location + ROT_VALUE - MAX_ALPHA;
+  const MAX_ALPHABET = ALPHABET.length;
+  if (location + ROTATE_VALUE >= MAX_ALPHABET) {
+    location = location + ROTATE_VALUE - MAX_ALPHABET;
   } else {
-    location = location + ROT_VALUE;
+    location = location + ROTATE_VALUE;
   }
   return location;
 }
 
-export { _locationInAlphabet, _isInAlphabet };
+export { _locationInAlphabet, _isInAlphabet, _newRotaedLocation };
