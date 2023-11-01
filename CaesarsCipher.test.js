@@ -24,6 +24,18 @@ describe("Caesars Cipher rot13 tests", () => {
     let result = rot13(code);
     expect(result).toBe(strResult);
   });
+
+  test("should correctly rotate a string with spaces", () => {
+    const strResult = `NOP QRST UVWXYZ ABCD EFGH IJK`;
+    let result = rot13("abc defg hijklm nopq rstu vwx");
+    expect(result).toBe(strResult);
+  });
+
+  test("should return the same string when input is not alphabetic", () => {
+    const strResult = `12345!@#$%`;
+    let result = rot13("12345!@#$%");
+    expect(result).toBe(strResult);
+  });
 });
 
 import {
