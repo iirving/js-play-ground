@@ -1,8 +1,5 @@
-import {
-  checkCashRegister,
-  doCidadjustmentForAType,
-  getTotalCid,
-} from "./CashRegister";
+import checkCashRegister from "./CashRegister";
+import { doCidadjustmentForAType, getTotalCid } from "./CashRegister";
 
 describe("test highlevel checkCashRegister function ", () => {
   test(" returns an object", () => {

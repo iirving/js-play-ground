@@ -70,8 +70,15 @@ const CURRENCY_VALUES_MULTIPLIER = {
 };
 
 /**
- * Loop thur cash in draw and depending on each sub array label total dollar amount.
- * @param {Array} cid - Cash in draw
+ * Calculates the total amount of cash in the drawer.
+ *
+ * This function iterates through each denomination in the cash drawer (represented as sub-arrays in the `cid` array),
+ * multiplies the quantity of each denomination by its value, and adds it to the total. The amounts are converted to pennies
+ * and then back to dollars to avoid precision issues that can occur when performing arithmetic with floating-point numbers.
+ *
+ * @param {Array} cid - An array representing the cash in the drawer.
+ *  Each element is a sub-array where the first element is the denomination name and the second element is the quantity of that denomination.
+ * @returns {number} The total amount of cash in the drawer, in dollars.
  */
 function getTotalCid(cid) {
   // note I'm converting to pennies and converting back to dollars to avoid pression issues
@@ -152,8 +159,7 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
     return { amount: 0, change: changeArray };
   } else if (ValueOfType <= changeAmountInPennies) {
     // some number of bills can be used to pay some ammount of the changeAmount
-    // we can use all of the bill to pay some of the amount
-
+    // we can we use all of the bill to pay some of the amount
     // how many bills of ValueOfType can go evely into changeAmountInPennies?
     // let numOfBills = Math.floor(changeAmountInPennies / ValueOfType);
     // // how much ofthis type do we give as change?
@@ -173,10 +179,18 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
 }
 
 /**
- * remove the changeAmount from the cash in draw
- * @param {Float} changeAmount the dollar (currancy $$.00) amount to be removed
- * @param {Array} cid cash in draw Arraychange array
- * @returns an cashRegister object with a status key and a change key Array.
+ * Adjusts the cash in drawer by removing the specified change amount.
+ *
+ * This function iterates through each denomination in the cash drawer (represented as sub-arrays in the `cid` array) from highest to lowest,
+ * and subtracts the change amount from the total cash in drawer. The change amount and the amounts in the cash drawer are converted to pennies
+ * to avoid precision issues that can occur when performing arithmetic with floating-point numbers.
+ *
+ * @param {number} changeAmount - The amount of change to be removed from the cash drawer, in dollars.
+ * @param {Array} cid - An array representing the cash in the drawer.
+ *  Each element is a sub-array where the first element is the denomination name and the second element is the quantity of that denomination.
+ * @returns {Object} An object representing the cash register status and the change to be given.
+ *  The object has a `status` key which can be 'INSUFFICIENT_FUNDS', 'CLOSED', or 'OPEN',
+ *  and a `change` key which is an array of the change due in each denomination.
  */
 function doCidadjustment(changeAmount, cid) {
   // for each element in cid highest to lowest
@@ -238,7 +252,24 @@ function doCidadjustment(changeAmount, cid) {
   return change;
 }
 
-function checkCashRegister(price, cash, cid) {
+/**
+ * Checks the cash register and returns an object with the status and change due.
+ *
+ * This function calculates the change due by subtracting the price from the cash given.
+ * It then checks if the total cash in drawer (cid) is less than the change due.
+ *
+ * If the total cid is less than the change due, it updates the status to 'INSUFFICIENT_FUNDS' and the change to an empty array.
+ * If the total cid is equal to the change due, it updates the status to 'CLOSED' and the change to the cid.
+ * If the total cid is more than the change due, it updates the status to 'OPEN' and the change to the change due in each denomination.
+ *
+ * @param {number} price - The price of the item, in dollars.
+ * @param {number} cash - The cash given by the customer, in dollars.
+ * @param {Array} cid - An array representing the cash in the drawer.
+ * Each element is a sub-array where the first element is the denomination name and the second element is the quantity of that denomination.
+ * @returns {Object} An object representing the cash register status and the change to be given.
+ * The object has a `status` key which can be 'INSUFFICIENT_FUNDS', 'CLOSED', or 'OPEN', and a `change` key which is an array of the change due in each denomination.
+ */
+export default function checkCashRegister(price, cash, cid) {
   let change = {
     status: STATUS_INSUFFICIENT,
     change: [],
@@ -261,4 +292,4 @@ function checkCashRegister(price, cash, cid) {
   return change;
 }
 
-export { checkCashRegister, doCidadjustmentForAType, getTotalCid };
+export { doCidadjustmentForAType, getTotalCid };
