@@ -91,12 +91,18 @@ function getTotalCid(cid) {
 }
 
 /**
- * how much of the bills of of ValueType can be returned as change,
- *  upto a maxium of value in pennies (i.e all the bills)
- * @param {Int} ValueOfType
- * @param {Int} changeAmountInPennies
- * @param {Int} value_in_pennies
- * @returns 2 decimal float
+ * Calculates the amount that can be returned as change in a specific denomination.
+ *
+ * This function determines how much of the bills or coins of a specific value can be returned as change,
+ * up to a maximum of the total value in pennies (i.e., all the bills or coins of that denomination).
+ * The amounts are converted to dollars from pennies to avoid precision issues that can occur when performing arithmetic with
+ * floating-point numbers.
+ *
+ * @param {number} ValueOfType - The value of the specific denomination of bill or coin, in dollars.
+ * @param {number} changeAmountInPennies - The total amount of change due, in pennies.
+ * @param {number} value_in_pennies - The total value of the specific denomination of bill or coin in the cash drawer, in pennies.
+ * @returns {number} The amount that can be returned as change in the specific denomination, in dollars.
+ * The returned value is a float with two decimal places.
  */
 function AmountReturnedDollars(
   ValueOfType,
@@ -115,24 +121,26 @@ function AmountReturnedDollars(
 }
 
 /**
- * for a give Cash in Draw element, how much of that element can I use
- *  and what is the remaining amount
- *  @param {Float} changeAmount the dollars (currancy $$.00) amount to be removed
- * @param {Array} cidElement with 2 elements a string for the BillType
- *  and a intger for the total dollar amount of that bill
- *  examples :
- *    ["TWENTY", 60], > 3 $20 bill
- *    ["DIME", 3.1], > 31 dimes (10 cents)
+ * Calculates the amount of a specific denomination to be used for change and the remaining amount.
  *
- * @returns {Object} first part "amount" the Adjusted in dollars,
- *  the value of the bills * the number of Bills,
- *  second "change" the Bills removed from Cash in Draw
+ * This function determines how much of a specific denomination (bills or coins) can be used as change, and what the remaining amount is.
+ * It takes into account the total amount of change required and the total value of the specific denomination available in the cash drawer.
  *
- *  exapmples :
- *    ["QUARTER", 0.5]  2 Quarter coins
- *    ["PENNY", 0.04]] 4 penny coins
- *    ["TEN", 20] 2 ten dollar bills
- *    ["ONE HUNDRED", 0] no ONE HUNDRED dollar bills
+ * @param {number} changeAmount - The total amount of change required, in dollars.
+ * @param {Array} cidElement - A two-element array representing a denomination in the cash drawer.
+ * The first element is a string indicating the type of bill or coin, and the second element is a number indicating the total value of that denomination available.
+ *
+ * Examples:
+ *    ["TWENTY", 60] - Represents 3 $20 bills.
+ *    ["DIME", 3.1] - Represents 31 dimes (10 cents each).
+ *
+ * @returns {Object} An object with two properties:
+ *    "amount" - The total value of the specific denomination used for change, in dollars.
+ *    "change" - An array representing the denomination and the total value of that denomination used for change.
+ *
+ * Examples:
+ *    ["QUARTER", 0.5] - Represents 2 quarters used for change.
+ *    ["PENNY", 0.04] - Represents 4 pennies used for change.
  */
 function doCidadjustmentForAType(changeAmount, cidElement) {
   let type = cidElement[0];
