@@ -31,4 +31,11 @@ jobs:
     - run: npm test
     - name: Comment lcov Code Coverage Report
       uses: Nef10/lcov-reporter-action@v0.4.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: coverage/lcov.info
+        # Optional: set a custom commit message
+        # commit-message: 'Coverage report for commit ${{ github.sha }}'
+        # Optional: set a custom commit author
+        # commit-author: 'Nef10 <
 
