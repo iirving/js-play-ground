@@ -160,4 +160,10 @@ describe("test Roman Numeral Converter function ", () => {
 
     expect(result).toBe("MMMCMXCIX");
   });
+  test("should return 'CC' for 200", () => {
+    const input = 200;
+    const expectedOutput = "CC";
+    const result = convertToRoman(input);
+    expect(result).toBe(expectedOutput);
+  });
 });
