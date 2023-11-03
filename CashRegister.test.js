@@ -1,7 +1,7 @@
 import checkCashRegister from "./CashRegister";
 import { doCidadjustmentForAType, getTotalCid } from "./CashRegister";
 
-describe("test highlevel checkCashRegister function ", () => {
+describe("test main checkCashRegister function ", () => {
   test(" returns an object", () => {
     let result = checkCashRegister(19.5, 20, [
       ["PENNY", 1.01],
@@ -121,91 +121,93 @@ describe("test highlevel checkCashRegister function ", () => {
   });
 });
 
-describe("testing sub function doCidadjustmentForAType", () => {
-  test(" passing in 96.76, [TWENTY, 60]", () => {
-    let cid = ["TWENTY", 60];
-    let result = doCidadjustmentForAType(96.76, cid);
+describe("testing private subfunctiions #WARNING may break if refactoring", () => {
+  describe("testing sub function doCidadjustmentForAType", () => {
+    test(" passing in 96.76, [TWENTY, 60]", () => {
+      let cid = ["TWENTY", 60];
+      let result = doCidadjustmentForAType(96.76, cid);
 
-    let amount = result.amount;
-    let change = result.change;
+      let amount = result.amount;
+      let change = result.change;
 
-    expect(amount).toBe("60.00");
-    expect(change[0]).toBe("TWENTY");
-    expect(change[1]).toBe("60.00");
+      expect(amount).toBe("60.00");
+      expect(change[0]).toBe("TWENTY");
+      expect(change[1]).toBe("60.00");
+    });
+
+    test(" doCidadjustmentForAType another 20 five 55", () => {
+      let result = doCidadjustmentForAType(20, ["FIVE", 55]);
+
+      expect(result.amount).toBe("20.00");
+      expect(result.change[1]).toBe("20.00");
+    });
+
+    test(" doCidadjustmentForAType another 20 five 55", () => {
+      let result = doCidadjustmentForAType(16 + 0.5 + 0.2 + 0.04, ["FIVE", 55]);
+
+      let amount = result.amount;
+      let change = result.change;
+
+      expect(amount).toBe("15.00");
+      expect(change[0]).toBe("FIVE");
+      expect(change[1]).toBe("15.00");
+    });
+
+    test(" doCidadjustmentForAType for a penny", () => {
+      let result = doCidadjustmentForAType(0.5, ["PENNY", 0.01]);
+
+      let amount = result.amount;
+      let change = result.change;
+
+      expect(amount).toBe("0.01");
+      expect(change[0]).toBe("PENNY");
+      expect(change[1]).toBe("0.01");
+    });
+
+    //  ["ONE", 1],
+    test(" doCidadjustmentForAType for a signle ONE and can ntot make change", () => {
+      let result = doCidadjustmentForAType(0.5, ["ONE", 1]);
+
+      let amount = result.amount;
+      let change = result.change;
+
+      expect(amount).toBe(0);
+      expect(change[0]).toBe("ONE");
+      expect(change[1]).toBe(0);
+    });
   });
 
-  test(" doCidadjustmentForAType another 20 five 55", () => {
-    let result = doCidadjustmentForAType(20, ["FIVE", 55]);
+  describe("testing getTotalCid", () => {
+    test(" passing in more simple example]", () => {
+      let cid = [["TWENTY", 100]];
+      let result = getTotalCid(cid);
+      expect(result).toBe(100);
+    });
 
-    expect(result.amount).toBe("20.00");
-    expect(result.change[1]).toBe("20.00");
-  });
+    test(" passing in another simple example]", () => {
+      let cid = [
+        ["FIVE", 55],
+        ["TWENTY", 100],
+      ];
+      let result = getTotalCid(cid);
+      expect(result).toBe(155);
+    });
 
-  test(" doCidadjustmentForAType another 20 five 55", () => {
-    let result = doCidadjustmentForAType(16 + 0.5 + 0.2 + 0.04, ["FIVE", 55]);
+    test(" passing in more completed exaple]", () => {
+      let cid = [
+        ["PENNY", 1.01],
+        ["NICKEL", 2.05],
+        ["DIME", 3.1],
+        ["QUARTER", 4.25],
+        ["ONE", 90],
+        ["FIVE", 55],
+        ["TEN", 20],
+        ["TWENTY", 60],
+        ["ONE HUNDRED", 100],
+      ];
+      let result = getTotalCid(cid);
 
-    let amount = result.amount;
-    let change = result.change;
-
-    expect(amount).toBe("15.00");
-    expect(change[0]).toBe("FIVE");
-    expect(change[1]).toBe("15.00");
-  });
-
-  test(" doCidadjustmentForAType for a penny", () => {
-    let result = doCidadjustmentForAType(0.5, ["PENNY", 0.01]);
-
-    let amount = result.amount;
-    let change = result.change;
-
-    expect(amount).toBe("0.01");
-    expect(change[0]).toBe("PENNY");
-    expect(change[1]).toBe("0.01");
-  });
-
-  //  ["ONE", 1],
-  test(" doCidadjustmentForAType for a signle ONE and can ntot make change", () => {
-    let result = doCidadjustmentForAType(0.5, ["ONE", 1]);
-
-    let amount = result.amount;
-    let change = result.change;
-
-    expect(amount).toBe(0);
-    expect(change[0]).toBe("ONE");
-    expect(change[1]).toBe(0);
-  });
-});
-
-describe("testing getTotalCid", () => {
-  test(" passing in more simple example]", () => {
-    let cid = [["TWENTY", 100]];
-    let result = getTotalCid(cid);
-    expect(result).toBe(100);
-  });
-
-  test(" passing in another simple example]", () => {
-    let cid = [
-      ["FIVE", 55],
-      ["TWENTY", 100],
-    ];
-    let result = getTotalCid(cid);
-    expect(result).toBe(155);
-  });
-
-  test(" passing in more completed exaple]", () => {
-    let cid = [
-      ["PENNY", 1.01],
-      ["NICKEL", 2.05],
-      ["DIME", 3.1],
-      ["QUARTER", 4.25],
-      ["ONE", 90],
-      ["FIVE", 55],
-      ["TEN", 20],
-      ["TWENTY", 60],
-      ["ONE HUNDRED", 100],
-    ];
-    let result = getTotalCid(cid);
-
-    expect(result).toBe(335.41);
+      expect(result).toBe(335.41);
+    });
   });
 });
