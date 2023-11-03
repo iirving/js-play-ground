@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1698975016937" clover="3.2.0">
-  <project timestamp="1698975016937" name="All files">
+<coverage generated="1698978328976" clover="3.2.0">
+  <project timestamp="1698978328976" name="All files">
     <metrics statements="238" coveredstatements="231" conditionals="127" coveredconditionals="118" methods="38" coveredmethods="37" elements="403" coveredelements="386" complexity="0" loc="238" ncloc="238" packages="1" files="13" classes="13"/>
     <file name="ArgumentsOptional.js" path="/Users/ian/Documents/code/js/freecodecamp/jsADS/ArgumentsOptional.js">
       <metrics statements="5" coveredstatements="5" conditionals="8" coveredconditionals="8" methods="3" coveredmethods="3"/>
