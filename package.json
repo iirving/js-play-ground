@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "jest": {
     "verbose": true
