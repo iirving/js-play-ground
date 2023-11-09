@@ -4,18 +4,10 @@
 
 export default function steamrollArray(arr) {
   let newArr = [];
-  // if (!Array.isArray(arr)) {
-  //   return arr;
-  // }
-  let len = arr.length;
-  for (let i = 0; i < len; i++) {
-    let element = arr[i];
-    if (Array.isArray(element)) {
-      let tmpArr = steamrollArray(element);
-      newArr = newArr.concat(tmpArr);
-    } else {
-      newArr.push(element);
-    }
-  }
+  arr.forEach((element) => {
+    return Array.isArray(element)
+      ? (newArr = newArr.concat(steamrollArray(element)))
+      : newArr.push(element);
+  });
   return newArr;
 }
