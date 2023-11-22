@@ -67,13 +67,13 @@ function _isInAlphabet(character) {
  * @returns {Number} a new single character value location
  */
 function _newRotaedLocation(location) {
-  const MAX_ALPHABET = ALPHABET.length;
-  if (location + ROTATE_VALUE >= MAX_ALPHABET) {
-    location = location + ROTATE_VALUE - MAX_ALPHABET;
-  } else {
-    location = location + ROTATE_VALUE;
-  }
-  return location;
+  return _isNewRotatedLocationPastTheAlphabet(location)
+    ? location + ROTATE_VALUE - ALPHABET.length
+    : location + ROTATE_VALUE;
+}
+
+function _isNewRotatedLocationPastTheAlphabet(location) {
+  return location + ROTATE_VALUE >= ALPHABET.length;
 }
 
 export { _locationInAlphabet, _isInAlphabet, _newRotaedLocation };
