@@ -109,10 +109,9 @@ function AmountReturnedDollars(
   changeAmountInPennies,
   value_in_pennies
 ) {
-  // how many bills of ValueOfType can go evenly into changeAmountInPennies?
-  let numOfBills = Math.floor(changeAmountInPennies / ValueOfType);
-  // how much ofthis type do we give as change?
-  let AmountChange = ValueOfType * numOfBills;
+  let numOfBills = Math.floor(changeAmountInPennies / ValueOfType); // how many bills of ValueOfType can go evenly into changeAmountInPennies?
+  let AmountChange = ValueOfType * numOfBills; // how much ofthis type do we give as change?
+
   // if the possible amount of change is greater than the existing cid the give the cid
   if (AmountChange > value_in_pennies) {
     return (value_in_pennies / 100).toFixed(2);
@@ -126,7 +125,7 @@ function AmountReturnedDollars(
  * This function determines how much of a specific denomination (bills or coins) can be used as change, and what the remaining amount is.
  * It takes into account the total amount of change required and the total value of the specific denomination available in the cash drawer.
  *
- * @param {number} changeAmount - The total amount of change required, in dollars.
+ * @param {number} changeAmountInDollars - The total amount of change required, in dollars.
  * @param {Array} cidElement - A two-element array representing a denomination in the cash drawer.
  * The first element is a string indicating the type of bill or coin, and the second element is a number indicating the total value of that denomination available.
  *
@@ -142,27 +141,26 @@ function AmountReturnedDollars(
  *    ["QUARTER", 0.5] - Represents 2 quarters used for change.
  *    ["PENNY", 0.04] - Represents 4 pennies used for change.
  */
-function doCidadjustmentForAType(changeAmount, cidElement) {
+function doCidadjustmentForAType(changeAmountInDollars, cidElement) {
   let type = cidElement[0];
   let valueInCID = cidElement[1];
-  let value_in_pennies = valueInCID * 100;
   let ValueOfTypeInPennies = CURRENCY_VALUES_MULTIPLIER[type]; //in pennies
-  let changeAmountInPennies = parseInt(Math.round(changeAmount * 100));
+  let changeAmountInPennies = parseInt(Math.round(changeAmountInDollars * 100));
 
   // the value in the cash draw matches the amount of change I am looking for
   //  then  easy return of all the cash in draw for this type
-  if (valueInCID === changeAmount) {
+  if (valueInCID === changeAmountInDollars) {
     return { amount: valueInCID, change: [type, valueInCID] };
   }
 
   // if we are looking for 0 change then return 0 and no change given out
-  if (changeAmount === 0) {
+  if (changeAmountInDollars === 0) {
     return { amount: 0, change: [] };
   }
 
   // if  Type has 0 in the cash draw then return amount unchanged and no change given out
   if (valueInCID == 0) {
-    return { amount: changeAmount, change: [] };
+    return { amount: changeAmountInDollars, change: [] };
   }
 
   // if the value of one unit of the type is greater that the changeAmount
@@ -197,33 +195,28 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
  */
 function doCidadjustment(changeAmount, cid) {
   let cid_length = cid.length;
-
-  let change = {
-    status: STATUS_OPEN,
-    change: [],
-  };
+  let changeArray = [];
 
   // for each element in cid highest to lowest
   for (let x = cid_length - 1; x >= 0; x--) {
     let adjustment = doCidadjustmentForAType(changeAmount, cid[x]);
-
     if (IsNoneZeroAdjustment(adjustment)) {
       let adjustedElement = adjustment.change;
       adjustedElement[1] = Number.parseFloat(adjustment.amount);
 
-      change.change.push(adjustedElement);
+      changeArray.push(adjustedElement);
       changeAmount = (changeAmount - adjustment.amount).toFixed(2);
     }
   }
 
   changeAmount = Number.parseFloat(changeAmount);
-
-  change.change = removeNullElemenetsFromChange(change);
-
   // if changeAmount is not zero then we dont have suffishent funds
   return changeAmount !== 0
     ? { status: STATUS_INSUFFICIENT, change: [] }
-    : change;
+    : {
+        status: STATUS_OPEN,
+        change: removeNullElemenetsFromChange(changeArray),
+      };
 }
 
 function IsNoneZeroAdjustment(adjustment) {
@@ -233,14 +226,13 @@ function IsNoneZeroAdjustment(adjustment) {
 }
 
 function removeNullElemenetsFromChange(change) {
-  let cleanArr = change.change.filter((elements) => {
-    let type = elements[0];
-    let value = elements[1];
+  return change.filter((element) => {
+    let type = element[0];
+    let value = element[1];
     if (type != undefined || value != undefined || value != 0) {
-      return elements;
+      return element;
     }
   });
-  return cleanArr;
 }
 
 /**
