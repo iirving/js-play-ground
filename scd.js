@@ -32,18 +32,12 @@ export default function smallestCommons(arr) {
   for (let i = start; i <= end; i++) {
     upperBound *= i;
   }
-  //  console.log(rangeArr, start, end, upperBound);
 
   let result = 0;
 
   for (let num = start; num <= upperBound; num++) {
     let rangeResult = false;
     for (const element of rangeArr) {
-      //  console.log(
-      //    'num=', num,
-      //    'dived by e=',element,
-      //     evenlyDivisible(num, element));
-
       if (!evenlyDivisible(num, element)) {
         rangeResult = false;
         break;
@@ -51,8 +45,7 @@ export default function smallestCommons(arr) {
         rangeResult = true;
       }
     }
-    // console.log(' after testing ', num,
-    // ' resulr is ', rangeResult)
+
     result = num;
     if (rangeResult) {
       break;
