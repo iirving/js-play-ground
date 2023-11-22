@@ -35,7 +35,6 @@ function convertOnesToRoman(num) {
 
 function convertTenssToRoman(num) {
   let numOfTens = num / 10;
-  // console.log("tens=", num, numOfTens);
 
   if (numOfTens <= 0) return "";
 
@@ -53,11 +52,6 @@ function convertTenssToRoman(num) {
 
 function convertHundredsToRoman(num) {
   let numOfHundreds = num / 100;
-  // console.log("numOfHundreds=", num, numOfHundreds);
-  // CM	900
-  // D	500
-  // CD	400
-  // C	100
 
   if (numOfHundreds <= 0) return "";
 
@@ -77,7 +71,6 @@ function convertHundredsToRoman(num) {
 function convertThousandsToRoman(num) {
   // M	1000
   let numOfThousands = num / 1000;
-  // console.log("numOfHundreds=", num, numOfThousands);
 
   if (numOfThousands <= 0 || num === 0) return "";
 
@@ -89,17 +82,6 @@ export default function convertToRoman(num) {
   let tens = num >= 10 ? (num % 100) - singles : 0;
   let hundreds = num >= 100 ? (num % 1000) - tens - singles : 0;
   let thousands = num >= 1000 ? (num % 10000) - hundreds - tens - singles : 0;
-
-  // console.log(
-  //   "thousands",
-  //   thousands,
-  //   "hundreds",
-  //   hundreds,
-  //   "tens",
-  //   tens,
-  //   "singles",
-  //   singles
-  // );
 
   let newStr =
     convertThousandsToRoman(thousands) +
