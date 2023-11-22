@@ -201,51 +201,43 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
  *  and a `change` key which is an array of the change due in each denomination.
  */
 function doCidadjustment(changeAmount, cid) {
-  // for each element in cid highest to lowest
   let cid_length = cid.length;
 
-  let orginalChangeAmount = changeAmount;
-
-  let changeAmount_in_pennies = changeAmount * 100;
-  let remaningAmmountInPennies = changeAmount_in_pennies;
-
   let change = {
-    status: STATUS_INSUFFICIENT,
+    status: STATUS_OPEN,
     change: [],
   };
-  let adjustedElement = [];
 
-  let NumberOFThisTypeICanUse = 0;
-  let element;
-
+  // for each element in cid highest to lowest
   for (let x = cid_length - 1; x >= 0; x--) {
-    element = cid[x];
+    let adjustment = doCidadjustmentForAType(changeAmount, cid[x]);
 
-    let adjustment = doCidadjustmentForAType(changeAmount, element);
+    if (IsNoneZeroAdjustment(adjustment)) {
+      let adjustedElement = adjustment.change;
+      adjustedElement[1] = Number.parseFloat(adjustment.amount);
 
-    if (adjustment.change.length !== 0 && adjustment.amount !== 0) {
-      adjustedElement = adjustment.change;
-      let changeElementAmount = adjustment.amount;
-      let type = adjustedElement[0];
-      adjustedElement[1] = Number.parseFloat(changeElementAmount);
-
-      change.status = STATUS_OPEN;
       change.change.push(adjustedElement);
       changeAmount = (changeAmount - adjustment.amount).toFixed(2);
     }
   }
 
   changeAmount = Number.parseFloat(changeAmount);
-  // if changeAmount is not zero then we dont have suffishent funds
-  if (changeAmount !== 0) {
-    change = {
-      status: STATUS_INSUFFICIENT,
-      change: [],
-    };
-    return change;
-  }
 
-  //remove any null elemenets from change.change
+  change.change = removeNullElemenetsFromChange(change);
+
+  // if changeAmount is not zero then we dont have suffishent funds
+  return changeAmount !== 0
+    ? { status: STATUS_INSUFFICIENT, change: [] }
+    : change;
+}
+
+function IsNoneZeroAdjustment(adjustment) {
+  return adjustment.change.length !== 0 && adjustment.amount !== 0
+    ? true
+    : false;
+}
+
+function removeNullElemenetsFromChange(change) {
   let cleanArr = change.change.filter((elements) => {
     let type = elements[0];
     let value = elements[1];
@@ -253,11 +245,7 @@ function doCidadjustment(changeAmount, cid) {
       return elements;
     }
   });
-  change.change = cleanArr;
-
-  let TotalChangeReturned = getTotalCid(change.change);
-
-  return change;
+  return cleanArr;
 }
 
 /**
