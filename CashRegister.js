@@ -146,44 +146,39 @@ function doCidadjustmentForAType(changeAmount, cidElement) {
   let type = cidElement[0];
   let valueInCID = cidElement[1];
   let value_in_pennies = valueInCID * 100;
-  let ValueOfType = CURRENCY_VALUES_MULTIPLIER[type]; //in pennies
-  let changeAmountInPennies = parseInt(Math.round(changeAmount * 100)); // the change Amount in Pennies
-  let changeArray = [type, 0]; // the type , the value of type being given as change
+  let ValueOfTypeInPennies = CURRENCY_VALUES_MULTIPLIER[type]; //in pennies
+  let changeAmountInPennies = parseInt(Math.round(changeAmount * 100));
 
+  // the value in the cash draw matches the amount of change I am looking for
+  //  then  easy return of all the cash in draw for this type
   if (valueInCID === changeAmount) {
-    // the value in the cash draw matches the amount of change I am looking for
-    //  then  easy return of all the cash in draw for this type
-    changeArray = [type, valueInCID];
-    return { amount: valueInCID, change: changeArray };
-  } else if (changeAmount === 0) {
-    // if we are looking for 0 change then return 0 and no change given out
-    return { amount: 0, change: [] };
-  } else if (valueInCID == 0) {
-    // if  Type has 0 in the cash draw then return amount unchanged and no change given out
-    return { amount: changeAmount, change: [] };
-  } else if (ValueOfType > changeAmountInPennies) {
-    // if the value of one unit of the type is greater that the changeAmount
-    //   then return the amount 0 and a null changeArray
-    return { amount: 0, change: changeArray };
-  } else if (ValueOfType <= changeAmountInPennies) {
-    // some number of bills can be used to pay some ammount of the changeAmount
-    // we can we use all of the bill to pay some of the amount
-    // how many bills of ValueOfType can go evely into changeAmountInPennies?
-    // let numOfBills = Math.floor(changeAmountInPennies / ValueOfType);
-    // // how much ofthis type do we give as change?
-    // let AmountChange = ValueOfType * numOfBills;
-    // if the possible amount of change is greater than the existing cid the give the cid
-    let AmountChange = AmountReturnedDollars(
-      ValueOfType,
-      changeAmountInPennies,
-      value_in_pennies
-    );
-    changeArray = [type, AmountChange];
-
-    return { amount: AmountChange, change: changeArray };
+    return { amount: valueInCID, change: [type, valueInCID] };
   }
 
-  return { amount: 0, change: changeArray };
+  // if we are looking for 0 change then return 0 and no change given out
+  if (changeAmount === 0) {
+    return { amount: 0, change: [] };
+  }
+
+  // if  Type has 0 in the cash draw then return amount unchanged and no change given out
+  if (valueInCID == 0) {
+    return { amount: changeAmount, change: [] };
+  }
+
+  // if the value of one unit of the type is greater that the changeAmount
+  //   then return the amount 0 and a null changeArray
+  if (ValueOfTypeInPennies > changeAmountInPennies) {
+    return { amount: 0, change: [type, 0] };
+  }
+
+  // some number of bills can be used to pay some ammount of the changeAmount
+  //  because (ValueOfTypeInPennies <= changeAmountInPennies)
+  let AmountChange = AmountReturnedDollars(
+    ValueOfTypeInPennies,
+    changeAmountInPennies,
+    valueInCID * 100
+  );
+  return { amount: AmountChange, change: [type, AmountChange] };
 }
 
 /**
