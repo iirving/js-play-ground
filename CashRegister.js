@@ -266,26 +266,25 @@ function removeNullElemenetsFromChange(change) {
  * The object has a `status` key which can be 'INSUFFICIENT_FUNDS', 'CLOSED', or 'OPEN', and a `change` key which is an array of the change due in each denomination.
  */
 export default function checkCashRegister(price, cash, cid) {
-  let change = {
-    status: STATUS_INSUFFICIENT,
-    change: [],
-  };
-
   let changeAmount = cash - price;
+  let totalCashInDrawer = getTotalCid(cid);
+  let remainingChange = totalCashInDrawer - changeAmount;
 
-  // get total cid amount
-  let totalCid = getTotalCid(cid);
-
-  if (totalCid < changeAmount) {
-    change.status = STATUS_INSUFFICIENT;
-    change.change = [];
-  } else if (changeAmount == totalCid) {
-    change.status = STATUS_CLOSED;
-    change.change = cid;
-  } else {
-    change = doCidadjustment(changeAmount, cid);
+  if (remainingChange < 0) {
+    return {
+      status: STATUS_INSUFFICIENT,
+      change: [],
+    };
   }
-  return change;
+
+  if (remainingChange === 0) {
+    return {
+      status: STATUS_CLOSED,
+      change: cid,
+    };
+  }
+
+  return doCidadjustment(changeAmount, cid);
 }
 
 export { doCidadjustmentForAType, getTotalCid };
