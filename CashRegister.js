@@ -114,9 +114,18 @@ function AmountReturnedDollars(
 
   // if the possible amount of change is greater than the existing cid the give the cid
   if (AmountChange > value_in_pennies) {
-    return (value_in_pennies / 100).toFixed(2);
+    return convertPenniesToDollars(value_in_pennies);
   }
-  return (AmountChange / 100).toFixed(2);
+  return convertPenniesToDollars(AmountChange);
+}
+
+/**
+ * Converts the given amount of pennies to dollars and cents.
+ * @param {number} pennies - The amount of pennies to convert.
+ * @returns {string} - The converted amount in dollars, with two decimal places.
+ */
+function convertPenniesToDollars(pennies) {
+  return (pennies / 100.0).toFixed(2);
 }
 
 /**
