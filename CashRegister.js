@@ -84,7 +84,7 @@ function getTotalCid(cid) {
   // note I'm converting to pennies and converting back to dollars to avoid pression issues
   let total_pennies = 0;
   for (const element of cid) {
-    total_pennies = total_pennies + element[1] * 100;
+    total_pennies = total_pennies + convertDollarsToPennies(element[1]);
   }
 
   return total_pennies / 100;
@@ -129,6 +129,15 @@ function convertPenniesToDollars(pennies) {
 }
 
 /**
+ * Converts dollars to pennies.
+ * @param {number} dollars - The amount in dollars.
+ * @returns {number} The equivalent amount in pennies.
+ */
+function convertDollarsToPennies(dollars) {
+  return parseInt(Math.round(dollars * 100));
+}
+
+/**
  * Calculates the amount of a specific denomination to be used for change and the remaining amount.
  *
  * This function determines how much of a specific denomination (bills or coins) can be used as change, and what the remaining amount is.
@@ -154,7 +163,7 @@ function doCidadjustmentForAType(changeAmountInDollars, cidElement) {
   let type = cidElement[0];
   let valueInCID = cidElement[1];
   let ValueOfTypeInPennies = CURRENCY_VALUES_MULTIPLIER[type]; //in pennies
-  let changeAmountInPennies = parseInt(Math.round(changeAmountInDollars * 100));
+  let changeAmountInPennies = convertDollarsToPennies(changeAmountInDollars);
 
   // the value in the cash draw matches the amount of change I am looking for
   //  then  easy return of all the cash in draw for this type
@@ -183,7 +192,7 @@ function doCidadjustmentForAType(changeAmountInDollars, cidElement) {
   let AmountChange = AmountReturnedDollars(
     ValueOfTypeInPennies,
     changeAmountInPennies,
-    valueInCID * 100
+    convertDollarsToPennies(valueInCID)
   );
   return { amount: AmountChange, change: [type, AmountChange] };
 }
