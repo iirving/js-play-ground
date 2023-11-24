@@ -81,7 +81,7 @@ const CURRENCY_VALUES_MULTIPLIER = {
  * @returns {number} The total amount of cash in the drawer, in dollars.
  */
 function getTotalCid(cid) {
-  // note I'm converting to pennies and converting back to dollars to avoid pression issues
+  // note I'm converting to pennies and converting back to dollars to avoid precision issues
   let total_pennies = 0;
   for (const element of cid) {
     total_pennies = total_pennies + convertDollarsToPennies(element[1]);
